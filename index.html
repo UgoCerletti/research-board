@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- skill:chrome -->
+<style>
+/* Credit line — bottom-right */
+.design-ui-credit {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  font: 11px/1 system-ui, sans-serif;
+  color: rgba(128,128,128,0.5);
+  pointer-events: none;
+  z-index: 2147483647;
+  transition: opacity 0.4s ease;
+  user-select: none;
+  letter-spacing: 0.02em;
+}
+
+/* Hide chrome on touch devices */
+@media (hover: none) {
+  .design-ui-credit { display: none; }
+}
+
+/* Print fixes */
+@media print {
+  * {
+    transition: none !important;
+    animation: none !important;
+    box-shadow: none !important;
+  }
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .design-ui-credit { display: none !important; }
+}
+
+</style>
+<script>
+(function () {
+    // Design-ui pages are single compositions, so the whole body is editable.
+    function markEditable() {
+        document.body.classList.add('artifact-editable');
+    }
+
+    // Credit badge with idle-fade. Hover devices only.
+    function initChromeUI() {
+        if (!matchMedia('(hover: hover)').matches) return;
+
+        var credit = document.createElement('div');
+        credit.className = 'design-ui-credit';
+        credit.setAttribute('aria-hidden', 'true');
+        credit.innerHTML = '\u{1F49C} by ClickUp Brain';
+        document.body.appendChild(credit);
+
+        var timer = null;
+        var fade = function (out) { credit.style.opacity = out ? '0' : ''; };
+        fade(true);
+        var show = function () {
+            fade(false);
+            clearTimeout(timer);
+            timer = setTimeout(function () { fade(true); }, 3000);
+        };
+        document.addEventListener('mousemove', show);
+        show();
+    }
+
+    function init() {
+        markEditable();
+        initChromeUI();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+
+</script>
+<!-- /skill:chrome -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TH Psychiatry Department Research Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: oklch(45% 0.12 25);
+    --primary-light: oklch(55% 0.10 25);
+    --primary-wash: oklch(95% 0.015 25);
+    --primary-hover: oklch(40% 0.14 25);
+    --neutral-900: oklch(15% 0.008 25);
+    --neutral-700: oklch(30% 0.006 25);
+    --neutral-500: oklch(50% 0.005 25);
+    --neutral-400: oklch(62% 0.004 25);
+    --neutral-200: oklch(88% 0.005 25);
+    --neutral-100: oklch(94% 0.004 25);
+    --neutral-50: oklch(98% 0.003 25);
+    --surface: oklch(99% 0.002 25);
+    --success: oklch(50% 0.12 155);
+    --success-wash: oklch(94% 0.03 155);
+    --info: oklch(50% 0.10 250);
+    --info-wash: oklch(94% 0.025 250);
+    --warning: oklch(55% 0.14 75);
+    --warning-wash: oklch(94% 0.03 75);
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    background: var(--surface);
+    color: var(--neutral-900);
+    line-height: 1.6;
+    min-height: 100vh;
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .landing {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .landing-title {
+    font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--neutral-900);
+    margin-bottom: 8px;
+    text-wrap: balance;
+  }
+
+  .landing-sub {
+    font-size: 1.05rem;
+    color: var(--neutral-500);
+    margin-bottom: 48px;
+    max-width: 48ch;
+  }
+
+  .role-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    max-width: 620px;
+    width: 100%;
+  }
+
+  .role-card {
+    padding: 32px 24px;
+    border: 2px solid var(--neutral-200);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: border-color 0.2s var(--ease-out-expo),
+                transform 0.2s var(--ease-out-expo),
+                box-shadow 0.2s var(--ease-out-expo);
+    background: var(--neutral-50);
+  }
+
+  .role-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px oklch(45% 0.12 25 / 0.08);
+  }
+
+  .role-card:active { transform: translateY(0); }
+
+  .role-icon {
+    width: 48px; height: 48px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px; font-size: 1.4rem;
+  }
+
+  .role-card:first-child .role-icon { background: var(--success-wash); }
+  .role-card:last-child .role-icon { background: var(--info-wash); }
+  .role-card h2 { font-size: 1.15rem; font-weight: 600; margin-bottom: 6px; }
+  .role-card p { font-size: 0.875rem; color: var(--neutral-500); line-height: 1.5; }
+
+  .pw-overlay {
+    display: none; position: fixed; inset: 0;
+    background: oklch(15% 0.008 25 / 0.4);
+    z-index: 100; align-items: center; justify-content: center; padding: 24px;
+  }
+  .pw-overlay.active { display: flex; }
+
+  .pw-panel {
+    background: var(--surface); border-radius: 14px;
+    width: 100%; max-width: 360px; padding: 32px;
+    animation: slideUp 0.3s var(--ease-out-expo);
+  }
+
+  .pw-panel h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
+  .pw-panel p { font-size: 0.85rem; color: var(--neutral-500); margin-bottom: 20px; }
+
+  .pw-panel input {
+    width: 100%; padding: 10px 14px;
+    border: 1.5px solid var(--neutral-200); border-radius: 8px;
+    font-size: 0.9rem; font-family: inherit;
+    background: var(--neutral-50); outline: none;
+    transition: border-color 0.15s;
+  }
+  .pw-panel input:focus { border-color: var(--primary); }
+
+  .pw-error {
+    color: oklch(50% 0.15 25); font-size: 0.8rem;
+    margin-top: 8px; display: none;
+  }
+
+  .pw-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+
+  .view { display: none; min-height: 100vh; }
+  .view.active { display: block; }
+  .landing.hidden { display: none; }
+
+  .dash-header {
+    padding: 20px 32px;
+    border-bottom: 1px solid var(--neutral-200);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap;
+    background: var(--neutral-50);
+    position: sticky; top: 0; z-index: 10;
+  }
+
+  .dash-header-left { display: flex; align-items: center; gap: 12px; }
+  .dash-header h1 { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.01em; }
+
+  .role-badge {
+    font-size: 0.7rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    padding: 4px 10px; border-radius: 100px;
+    background: var(--primary-wash); color: var(--primary);
+  }
+
+  .back-btn {
+    font-size: 0.85rem; color: var(--neutral-500);
+    cursor: pointer; border: none; background: none;
+    font-family: inherit; padding: 6px 12px; border-radius: 6px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .back-btn:hover { background: var(--neutral-100); color: var(--neutral-900); }
+
+  .dash-content { max-width: 860px; margin: 0 auto; padding: 32px 24px 64px; }
+
+  .dash-toolbar {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 20px; flex-wrap: wrap;
+  }
+
+  .add-project-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 10px 18px; background: var(--primary);
+    color: oklch(98% 0.005 25); border: none; border-radius: 8px;
+    font-size: 0.875rem; font-weight: 600; font-family: inherit;
+    cursor: pointer; transition: background 0.15s var(--ease-out-expo), transform 0.1s;
+  }
+  .add-project-btn:hover { background: var(--primary-hover); }
+  .add-project-btn:active { transform: scale(0.97); }
+
+  .search-box {
+    flex: 1; min-width: 180px; max-width: 320px;
+    padding: 9px 14px 9px 36px;
+    border: 1.5px solid var(--neutral-200); border-radius: 8px;
+    font-size: 0.85rem; font-family: inherit;
+    background: var(--neutral-50) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%239a9a9a' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='7' cy='7' r='4.5'/%3E%3Cpath d='M10.5 10.5 14 14'/%3E%3C/svg%3E") 12px center no-repeat;
+    outline: none; transition: border-color 0.15s;
+  }
+  .search-box:focus { border-color: var(--primary); }
+
+  .filter-tabs {
+    display: flex; gap: 4px;
+    background: var(--neutral-100); padding: 3px; border-radius: 8px;
+    margin-bottom: 16px;
+  }
+
+  .filter-tab {
+    padding: 6px 14px; font-size: 0.8rem; font-weight: 500;
+    border: none; background: none; border-radius: 6px;
+    cursor: pointer; color: var(--neutral-500); font-family: inherit;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .filter-tab.active {
+    background: var(--surface); color: var(--neutral-900);
+    box-shadow: 0 1px 3px oklch(15% 0.008 25 / 0.08);
+  }
+  .filter-tab:hover:not(.active) { color: var(--neutral-700); }
+
+  .project-list { display: flex; flex-direction: column; gap: 12px; }
+
+  .project-item {
+    padding: 20px 24px;
+    border: 1px solid var(--neutral-200); border-radius: 10px;
+    background: var(--neutral-50); cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .project-item:hover {
+    border-color: var(--primary-light);
+    box-shadow: 0 2px 8px oklch(45% 0.12 25 / 0.05);
+  }
+
+  .project-item-header {
+    display: flex; align-items: flex-start;
+    justify-content: space-between; gap: 12px; margin-bottom: 6px;
+  }
+
+  .project-item h3 { font-size: 1rem; font-weight: 600; }
+
+  .project-timeline {
+    font-size: 0.72rem; font-weight: 500; color: var(--neutral-400);
+    white-space: nowrap; padding: 3px 8px;
+    background: var(--neutral-100); border-radius: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .project-item-desc {
+    font-size: 0.875rem; color: var(--neutral-500);
+    display: -webkit-box; -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical; overflow: hidden;
+  }
+
+  .project-tags { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+
+  .tag {
+    font-size: 0.7rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    padding: 3px 8px; border-radius: 4px;
+  }
+  .tag-recruiting { color: var(--success); background: var(--success-wash); }
+  .tag-in-progress { color: var(--info); background: var(--info-wash); }
+  .tag-planning { color: var(--warning); background: var(--warning-wash); }
+  .tag-completed { color: var(--neutral-500); background: var(--neutral-100); }
+
+  .empty-state { text-align: center; padding: 64px 24px; color: var(--neutral-400); }
+  .empty-state p { font-size: 1rem; margin-bottom: 4px; }
+  .empty-state span { font-size: 0.85rem; }
+
+  .loading-state { text-align: center; padding: 64px 24px; color: var(--neutral-400); font-size: 0.9rem; }
+
+  .detail-header {
+    padding: 20px 32px; border-bottom: 1px solid var(--neutral-200);
+    background: var(--neutral-50); position: sticky; top: 0; z-index: 10;
+  }
+
+  .detail-content { max-width: 680px; margin: 0 auto; padding: 40px 24px 64px; }
+  .detail-content h2 { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.015em; margin-bottom: 8px; }
+  .detail-status-badge { display: inline-block; margin-bottom: 28px; }
+  .detail-section { margin-bottom: 28px; }
+
+  .detail-section-label {
+    font-size: 0.72rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--neutral-400); margin-bottom: 6px;
+  }
+
+  .detail-section-value {
+    font-size: 0.95rem; color: var(--neutral-700);
+    line-height: 1.6; white-space: pre-wrap;
+  }
+
+  .detail-contact {
+    padding: 16px 20px; background: var(--primary-wash);
+    border-radius: 8px; font-size: 0.9rem; color: var(--neutral-700);
+  }
+  .detail-contact a { color: var(--primary); text-decoration: none; font-weight: 500; }
+  .detail-contact a:hover { text-decoration: underline; }
+
+  .status-updates { margin-top: 32px; }
+  .status-updates h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 14px; }
+
+  .update-item {
+    padding: 12px 16px; background: var(--neutral-100);
+    border-radius: 8px; margin-bottom: 8px;
+  }
+  .update-item-date { font-size: 0.72rem; font-weight: 500; color: var(--neutral-400); margin-bottom: 4px; font-variant-numeric: tabular-nums; }
+  .update-item-text { font-size: 0.875rem; color: var(--neutral-700); }
+
+  .add-update-area { margin-top: 16px; display: flex; gap: 8px; }
+  .add-update-area input {
+    flex: 1; padding: 9px 14px;
+    border: 1.5px solid var(--neutral-200); border-radius: 8px;
+    font-size: 0.85rem; font-family: inherit;
+    background: var(--neutral-50); outline: none; transition: border-color 0.15s;
+  }
+  .add-update-area input:focus { border-color: var(--primary); }
+  .add-update-area button {
+    padding: 9px 14px; background: var(--primary);
+    color: oklch(98% 0.005 25); border: none; border-radius: 8px;
+    font-size: 0.8rem; font-weight: 600; font-family: inherit;
+    cursor: pointer; white-space: nowrap; transition: background 0.15s;
+  }
+  .add-update-area button:hover { background: var(--primary-hover); }
+
+  .detail-actions {
+    margin-top: 36px; padding-top: 24px;
+    border-top: 1px solid var(--neutral-200); display: flex; gap: 10px;
+  }
+
+  .delete-btn {
+    padding: 8px 14px; border: 1.5px solid oklch(60% 0.15 25);
+    border-radius: 8px; background: oklch(95% 0.02 25);
+    color: oklch(45% 0.15 25); font-size: 0.8rem; font-weight: 600;
+    font-family: inherit; cursor: pointer; transition: background 0.15s;
+  }
+  .delete-btn:hover { background: oklch(90% 0.04 25); }
+
+  .edit-btn {
+    padding: 8px 14px; border: 1.5px solid var(--neutral-200);
+    border-radius: 8px; background: var(--neutral-50);
+    color: var(--neutral-700); font-size: 0.8rem; font-weight: 600;
+    font-family: inherit; cursor: pointer; transition: background 0.15s;
+  }
+  .edit-btn:hover { background: var(--neutral-100); }
+
+  .form-overlay {
+    display: none; position: fixed; inset: 0;
+    background: oklch(15% 0.008 25 / 0.4);
+    z-index: 100; align-items: center; justify-content: center;
+    padding: 24px; overflow-y: auto;
+  }
+  .form-overlay.active { display: flex; }
+
+  .form-panel {
+    background: var(--surface); border-radius: 14px;
+    width: 100%; max-width: 520px; max-height: 90vh;
+    overflow-y: auto; padding: 32px;
+    animation: slideUp 0.3s var(--ease-out-expo);
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .form-panel h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 24px; }
+  .form-group { margin-bottom: 18px; }
+  .form-group label {
+    display: block; font-size: 0.8rem; font-weight: 600;
+    color: var(--neutral-700); margin-bottom: 6px;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%; padding: 10px 14px;
+    border: 1.5px solid var(--neutral-200); border-radius: 8px;
+    font-size: 0.9rem; font-family: inherit;
+    color: var(--neutral-900); background: var(--neutral-50);
+    transition: border-color 0.15s; outline: none;
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--primary); }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+
+  .date-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .date-label { font-size: 0.72rem; color: var(--neutral-400); font-weight: 500; display: block; margin-bottom: 4px; }
+
+  .form-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
+
+  .btn-secondary {
+    padding: 9px 16px; border: 1.5px solid var(--neutral-200);
+    border-radius: 8px; background: var(--surface);
+    font-size: 0.85rem; font-weight: 500; font-family: inherit;
+    cursor: pointer; color: var(--neutral-700); transition: background 0.15s;
+  }
+  .btn-secondary:hover { background: var(--neutral-100); }
+
+  .btn-primary {
+    padding: 9px 18px; border: none; border-radius: 8px;
+    background: var(--primary); color: oklch(98% 0.005 25);
+    font-size: 0.85rem; font-weight: 600; font-family: inherit;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .btn-primary:hover { background: var(--primary-hover); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .form-error {
+    color: oklch(50% 0.15 25); font-size: 0.8rem;
+    margin-top: 8px; display: none;
+  }
+
+  .toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--neutral-900); color: oklch(95% 0.004 25);
+    padding: 12px 20px; border-radius: 8px;
+    font-size: 0.85rem; font-weight: 500;
+    opacity: 0; transition: opacity 0.2s, transform 0.3s var(--ease-out-expo);
+    z-index: 200; pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 600px) {
+    .dash-header { padding: 16px 20px; }
+    .dash-content { padding: 24px 16px 48px; }
+    .project-item { padding: 16px 18px; }
+    .form-panel { padding: 24px; }
+    .detail-content { padding: 28px 16px 48px; }
+    .role-options { grid-template-columns: 1fr; }
+    .date-row { grid-template-columns: 1fr; }
+    .detail-header { padding: 16px 20px; }
+    .filter-tabs { flex-wrap: wrap; }
+    .search-box { max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="landing" id="landing">
+  <h1 class="landing-title">TH Psychiatry Department Research Board</h1>
+  <p class="landing-sub">Find collaborators or discover projects looking for team members.</p>
+  <div class="role-options">
+    <div class="role-card" id="recruitCard">
+      <div class="role-icon">📢</div>
+      <h2>Looking to Recruit</h2>
+      <p>Post your research project and find collaborators to join your team.</p>
+    </div>
+    <div class="role-card" id="joinCard">
+      <div class="role-icon">🔍</div>
+      <h2>Looking to Join</h2>
+      <p>Browse active projects and connect with teams looking for help.</p>
+    </div>
+  </div>
+</div>
+
+<div class="pw-overlay" id="pwOverlay">
+  <div class="pw-panel" id="pwPanel">
+    <h2>Recruiter Access</h2>
+    <p>Enter the department password to post and manage projects.</p>
+    <input type="password" id="pwInput" placeholder="Password">
+    <p class="pw-error" id="pwError">Incorrect password. Try again.</p>
+    <div class="pw-actions">
+      <button class="btn-secondary" id="pwCancel">Cancel</button>
+      <button class="btn-primary" id="pwSubmit">Enter</button>
+    </div>
+  </div>
+</div>
+
+<div class="view" id="dashboard">
+  <div class="dash-header">
+    <div class="dash-header-left">
+      <h1>TH Psych Research Board</h1>
+      <span class="role-badge" id="roleBadge"></span>
+    </div>
+    <button class="back-btn" id="backBtn">← Change role</button>
+  </div>
+  <div class="dash-content">
+    <div class="dash-toolbar">
+      <button class="add-project-btn" id="addBtn" style="display:none;">+ New Project</button>
+      <input type="text" class="search-box" id="searchBox" placeholder="Search projects...">
+    </div>
+    <div class="filter-tabs" id="filterTabs">
+      <button class="filter-tab active" data-filter="all">All</button>
+      <button class="filter-tab" data-filter="recruiting">Recruiting</button>
+      <button class="filter-tab" data-filter="in-progress">In Progress</button>
+      <button class="filter-tab" data-filter="planning">Planning</button>
+      <button class="filter-tab" data-filter="completed">Completed</button>
+    </div>
+    <div class="project-list" id="projectList"></div>
+  </div>
+</div>
+
+<div class="view" id="projectDetail">
+  <div class="detail-header">
+    <button class="back-btn" id="detailBackBtn">← Back to projects</button>
+  </div>
+  <div class="detail-content" id="detailContent"></div>
+</div>
+
+<div class="form-overlay" id="formOverlay">
+  <div class="form-panel" id="formPanel">
+    <h2 id="formTitle">Add a Research Project</h2>
+    <div class="form-group">
+      <label for="projTitle">Project Title *</label>
+      <input type="text" id="projTitle" placeholder="e.g. Neuroimaging in Treatment-Resistant Depression">
+    </div>
+    <div class="form-group">
+      <label for="projDesc">Description *</label>
+      <textarea id="projDesc" placeholder="What is this project about? What are its goals?"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="projStatus">Project Status</label>
+      <select id="projStatus">
+        <option value="recruiting">Recruiting</option>
+        <option value="in-progress">In Progress</option>
+        <option value="planning">Planning</option>
+        <option value="completed">Completed</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="projRoles">Roles Needed</label>
+      <textarea id="projRoles" placeholder="e.g. Data analyst, Research assistant, Co-PI"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="projContact">Contact Information *</label>
+      <input type="text" id="projContact" placeholder="Email, phone, or other way to reach you">
+    </div>
+    <div class="form-group">
+      <label>Timeline</label>
+      <div class="date-row">
+        <div>
+          <span class="date-label">Start Date</span>
+          <input type="date" id="projStart">
+        </div>
+        <div>
+          <span class="date-label">End Date</span>
+          <input type="date" id="projEnd">
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="projUpdate">Initial Status Update (optional)</label>
+      <textarea id="projUpdate" placeholder="e.g. IRB submitted, awaiting approval."></textarea>
+    </div>
+    <p class="form-error" id="formError">Please fill in the required fields.</p>
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" id="cancelBtn">Cancel</button>
+      <button type="button" class="btn-primary" id="submitBtn">Post Project</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function() {
+  var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwdXrmOGQtaeOBTf2B3bkumUXHHkG2iaU-R5onqDQZRb4vKWoEtHpKTRME1INiKuZTejA/exec';
+  var RECRUITER_PASSWORD = 'Towerpsych';
+
+  var currentRole = null;
+  var currentFilter = 'all';
+  var searchQuery = '';
+  var editingId = null;
+  var projects = [];
+
+  var landing = document.getElementById('landing');
+  var dashboard = document.getElementById('dashboard');
+  var projectDetail = document.getElementById('projectDetail');
+  var formOverlay = document.getElementById('formOverlay');
+  var formPanel = document.getElementById('formPanel');
+  var projectList = document.getElementById('projectList');
+  var detailContent = document.getElementById('detailContent');
+  var formError = document.getElementById('formError');
+  var toastEl = document.getElementById('toast');
+  var pwOverlay = document.getElementById('pwOverlay');
+  var searchBox = document.getElementById('searchBox');
+
+  // ROLE SELECTION
+  document.getElementById('recruitCard').addEventListener('click', function() {
+    pwOverlay.classList.add('active');
+    document.getElementById('pwInput').value = '';
+    document.getElementById('pwError').style.display = 'none';
+    setTimeout(function() { document.getElementById('pwInput').focus(); }, 100);
+  });
+
+  document.getElementById('joinCard').addEventListener('click', function() {
+    selectRole('join');
+  });
+
+  // PASSWORD
+  document.getElementById('pwSubmit').addEventListener('click', checkPassword);
+  document.getElementById('pwInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') checkPassword();
+  });
+  document.getElementById('pwCancel').addEventListener('click', function() {
+    pwOverlay.classList.remove('active');
+  });
+  document.getElementById('pwPanel').addEventListener('click', function(e) { e.stopPropagation(); });
+  pwOverlay.addEventListener('click', function(e) {
+    if (e.target === pwOverlay) pwOverlay.classList.remove('active');
+  });
+
+  function checkPassword() {
+    var val = document.getElementById('pwInput').value;
+    if (val === RECRUITER_PASSWORD) {
+      pwOverlay.classList.remove('active');
+      selectRole('recruit');
+    } else {
+      document.getElementById('pwError').style.display = 'block';
+    }
+  }
+
+  function selectRole(role) {
+    currentRole = role;
+    landing.classList.add('hidden');
+    dashboard.classList.add('active');
+    document.getElementById('roleBadge').textContent = role === 'recruit' ? 'Recruiter' : 'Participant';
+    document.getElementById('addBtn').style.display = role === 'recruit' ? 'inline-flex' : 'none';
+    loadProjects();
+  }
+
+  // BACK
+  document.getElementById('backBtn').addEventListener('click', function() {
+    landing.classList.remove('hidden');
+    dashboard.classList.remove('active');
+    currentRole = null;
+  });
+
+  // FILTERS
+  document.getElementById('filterTabs').addEventListener('click', function(e) {
+    var tab = e.target.closest('.filter-tab');
+    if (!tab) return;
+    currentFilter = tab.getAttribute('data-filter');
+    document.querySelectorAll('.filter-tab').forEach(function(t) { t.classList.remove('active'); });
+    tab.classList.add('active');
+    renderProjects();
+  });
+
+  // SEARCH
+  searchBox.addEventListener('input', function() {
+    searchQuery = this.value.trim().toLowerCase();
+    renderProjects();
+  });
+
+  // ADD
+  document.getElementById('addBtn').addEventListener('click', function() {
+    editingId = null;
+    clearForm();
+    document.getElementById('formTitle').textContent = 'Add a Research Project';
+    document.getElementById('submitBtn').textContent = 'Post Project';
+    formOverlay.classList.add('active');
+  });
+
+  // CANCEL / CLOSE FORM
+  document.getElementById('cancelBtn').addEventListener('click', closeForm);
+  formOverlay.addEventListener('click', function(e) { if (e.target === formOverlay) closeForm(); });
+  formPanel.addEventListener('click', function(e) { e.stopPropagation(); });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeForm(); });
+
+  // SUBMIT
+  document.getElementById('submitBtn').addEventListener('click', function() {
+    var title = document.getElementById('projTitle').value.trim();
+    var description = document.getElementById('projDesc').value.trim();
+    var status = document.getElementById('projStatus').value;
+    var roles = document.getElementById('projRoles').value.trim();
+    var contact = document.getElementById('projContact').value.trim();
+    var startDate = document.getElementById('projStart').value;
+    var endDate = document.getElementById('projEnd').value;
+    var initialUpdate = document.getElementById('projUpdate').value.trim();
+
+    if (!title || !description || !contact) {
+      formError.style.display = 'block';
+      return;
+    }
+    formError.style.display = 'none';
+
+    var btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
+
+    if (editingId !== null) {
+      var proj = findById(editingId);
+      if (proj) {
+        proj.title = title;
+        proj.description = description;
+        proj.status = status;
+        proj.roles = roles;
+        proj.contact = contact;
+        proj.startDate = startDate;
+        proj.endDate = endDate;
+        if (initialUpdate) {
+          if (!proj.updates) proj.updates = [];
+          proj.updates.unshift({ text: initialUpdate, date: Date.now() });
+        }
+      }
+      saveToSheet(proj, 'update', function() {
+        btn.disabled = false;
+        btn.textContent = 'Save Changes';
+        showToast('Project updated');
+        closeForm();
+        viewProjectById(editingId);
+      });
+    } else {
+      var project = {
+        id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+        title: title,
+        description: description,
+        status: status,
+        roles: roles,
+        contact: contact,
+        startDate: startDate,
+        endDate: endDate,
+        updates: initialUpdate ? [{ text: initialUpdate, date: Date.now() }] : [],
+        created: Date.now()
+      };
+      projects.unshift(project);
+      saveToSheet(project, 'create', function() {
+        btn.disabled = false;
+        btn.textContent = 'Post Project';
+        showToast('Project posted!');
+        closeForm();
+        renderProjects();
+      });
+    }
+  });
+
+  // DETAIL BACK
+  document.getElementById('detailBackBtn').addEventListener('click', closeDetail);
+
+  // PROJECT LIST CLICK
+  projectList.addEventListener('click', function(e) {
+    var item = e.target.closest('.project-item');
+    if (!item) return;
+    var id = item.getAttribute('data-id');
+    viewProjectById(id);
+  });
+
+  // ----- DATA -----
+
+  function loadProjects() {
+    projectList.innerHTML = '<div class="loading-state">Loading projects...</div>';
+
+    fetch(SCRIPT_URL + '?action=getAll')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        projects = data || [];
+        renderProjects();
+      })
+      .catch(function(err) {
+        try { projects = JSON.parse(localStorage.getItem('researchProjects') || '[]'); } catch(e) { projects = []; }
+        renderProjects();
+        showToast('Showing cached data (connection issue)');
+      });
+  }
+
+  function saveToSheet(project, action, callback) {
+    localStorage.setItem('researchProjects', JSON.stringify(projects));
+
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action: action, project: project })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function() { if (callback) callback(); })
+    .catch(function() {
+      showToast('Saved locally (server issue)');
+      if (callback) callback();
+    });
+  }
+
+  function deleteFromSheet(id, callback) {
+    projects = projects.filter(function(p) { return p.id !== id; });
+    localStorage.setItem('researchProjects', JSON.stringify(projects));
+
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action: 'delete', id: id })
+    })
+    .then(function() { if (callback) callback(); })
+    .catch(function() { if (callback) callback(); });
+  }
+
+  function findById(id) {
+    for (var i = 0; i < projects.length; i++) {
+      if (projects[i].id === id) return projects[i];
+    }
+    return null;
+  }
+
+  // ----- RENDER -----
+
+  function renderProjects() {
+    var filtered = projects;
+
+    if (currentFilter !== 'all') {
+      filtered = filtered.filter(function(p) { return p.status === currentFilter; });
+    }
+
+    if (searchQuery) {
+      filtered = filtered.filter(function(p) {
+        var haystack = (p.title + ' ' + p.description + ' ' + (p.roles || '')).toLowerCase();
+        return haystack.indexOf(searchQuery) !== -1;
+      });
+    }
+
+    if (filtered.length === 0) {
+      var msg = searchQuery ? 'No projects match your search.' : 'No projects found.';
+      var sub = currentRole === 'recruit' ? 'Click "+ New Project" to add one.' : 'Check back soon for new opportunities.';
+      projectList.innerHTML = '<div class="empty-state"><p>' + msg + '</p><span>' + sub + '</span></div>';
+      return;
+    }
+
+    var html = '';
+    for (var i = 0; i < filtered.length; i++) {
+      var p = filtered[i];
+      html += '<div class="project-item" data-id="' + p.id + '">' +
+        '<div class="project-item-header">' +
+        '<h3>' + esc(p.title) + '</h3>' +
+        ((p.startDate || p.endDate) ? '<span class="project-timeline">' + formatDateRange(p.startDate, p.endDate) + '</span>' : '') +
+        '</div>' +
+        '<p class="project-item-desc">' + esc(p.description) + '</p>' +
+        '<div class="project-tags">' +
+        '<span class="tag tag-' + p.status + '">' + statusLabel(p.status) + '</span>' +
+        (p.roles ? '<span class="tag tag-recruiting">Recruiting</span>' : '') +
+        '</div></div>';
+    }
+    projectList.innerHTML = html;
+  }
+
+  function viewProjectById(id) {
+    var p = findById(id);
+    if (!p) return;
+
+    dashboard.classList.remove('active');
+    projectDetail.classList.add('active');
+
+    var updatesHTML = '';
+    if (p.updates && p.updates.length > 0) {
+      for (var i = 0; i < p.updates.length; i++) {
+        var u = p.updates[i];
+        updatesHTML += '<div class="update-item">' +
+          '<div class="update-item-date">' + new Date(u.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + '</div>' +
+          '<div class="update-item-text">' + esc(u.text) + '</div></div>';
+      }
+    }
+
+    var addUpdateHTML = currentRole === 'recruit' ?
+      '<div class="add-update-area"><input type="text" id="newUpdate" placeholder="Add a status update...">' +
+      '<button id="postUpdateBtn">Post</button></div>' : '';
+
+    var actionsHTML = currentRole === 'recruit' ?
+      '<div class="detail-actions">' +
+      '<button class="edit-btn" id="editProjectBtn">Edit project</button>' +
+      '<button class="delete-btn" id="deleteProjectBtn">Remove project</button></div>' : '';
+
+    detailContent.innerHTML =
+      '<h2>' + esc(p.title) + '</h2>' +
+      '<div class="detail-status-badge"><span class="tag tag-' + p.status + '">' + statusLabel(p.status) + '</span></div>' +
+      '<div class="detail-section"><div class="detail-section-label">Description</div>' +
+      '<div class="detail-section-value">' + esc(p.description) + '</div></div>' +
+      (p.roles ? '<div class="detail-section"><div class="detail-section-label">Roles Needed</div>' +
+      '<div class="detail-section-value">' + esc(p.roles) + '</div></div>' : '') +
+      '<div class="detail-section"><div class="detail-section-label">Contact</div>' +
+      '<div class="detail-contact">' + linkify(esc(p.contact)) + '</div></div>' +
+      ((p.startDate || p.endDate) ? '<div class="detail-section"><div class="detail-section-label">Timeline</div>' +
+      '<div class="detail-section-value">' + formatDateRange(p.startDate, p.endDate) + '</div></div>' : '') +
+      '<div class="status-updates"><h3>Status Updates</h3>' +
+      (updatesHTML || '<p style="font-size:0.85rem;color:var(--neutral-400);">No updates yet.</p>') +
+      addUpdateHTML + '</div>' + actionsHTML;
+
+    if (currentRole === 'recruit') {
+      var postBtn = document.getElementById('postUpdateBtn');
+      if (postBtn) {
+        postBtn.addEventListener('click', function() {
+          var input = document.getElementById('newUpdate');
+          var text = input.value.trim();
+          if (!text) return;
+          if (!p.updates) p.updates = [];
+          p.updates.unshift({ text: text, date: Date.now() });
+          saveToSheet(p, 'update', function() {
+            showToast('Update posted');
+            viewProjectById(id);
+          });
+        });
+      }
+
+      var editBtn = document.getElementById('editProjectBtn');
+      if (editBtn) {
+        editBtn.addEventListener('click', function() {
+          editingId = id;
+          document.getElementById('formTitle').textContent = 'Edit Project';
+          document.getElementById('submitBtn').textContent = 'Save Changes';
+          document.getElementById('projTitle').value = p.title || '';
+          document.getElementById('projDesc').value = p.description || '';
+          document.getElementById('projStatus').value = p.status || 'recruiting';
+          document.getElementById('projRoles').value = p.roles || '';
+          document.getElementById('projContact').value = p.contact || '';
+          document.getElementById('projStart').value = p.startDate || '';
+          document.getElementById('projEnd').value = p.endDate || '';
+          document.getElementById('projUpdate').value = '';
+          formOverlay.classList.add('active');
+        });
+      }
+
+      var delBtn = document.getElementById('deleteProjectBtn');
+      if (delBtn) {
+        delBtn.addEventListener('click', function() {
+          if (confirm('Remove this project from the board?')) {
+            deleteFromSheet(id, function() {
+              showToast('Project removed');
+              closeDetail();
+            });
+          }
+        });
+      }
+    }
+  }
+
+  function closeDetail() {
+    projectDetail.classList.remove('active');
+    dashboard.classList.add('active');
+    renderProjects();
+  }
+
+  function closeForm() {
+    formOverlay.classList.remove('active');
+    formError.style.display = 'none';
+    editingId = null;
+  }
+
+  function clearForm() {
+    document.getElementById('projTitle').value = '';
+    document.getElementById('projDesc').value = '';
+    document.getElementById('projStatus').value = 'recruiting';
+    document.getElementById('projRoles').value = '';
+    document.getElementById('projContact').value = '';
+    document.getElementById('projStart').value = '';
+    document.getElementById('projEnd').value = '';
+    document.getElementById('projUpdate').value = '';
+    formError.style.display = 'none';
+  }
+
+  function statusLabel(s) {
+    var map = { 'recruiting': 'Recruiting', 'in-progress': 'In Progress', 'planning': 'Planning', 'completed': 'Completed' };
+    return map[s] || s;
+  }
+
+  function formatDateRange(start, end) {
+    var opts = { month: 'short', year: 'numeric' };
+    var s = start ? new Date(start + 'T00:00:00').toLocaleDateString('en-US', opts) : '';
+    var e = end ? new Date(end + 'T00:00:00').toLocaleDateString('en-US', opts) : '';
+    if (s && e) return s + ' \u2013 ' + e;
+    if (s) return 'From ' + s;
+    if (e) return 'Until ' + e;
+    return '';
+  }
+
+  function showToast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    setTimeout(function() { toastEl.classList.remove('show'); }, 2500);
+  }
+
+  function esc(str) {
+    var d = document.createElement('div');
+    d.textContent = str || '';
+    return d.innerHTML;
+  }
+
+  function linkify(text) {
+    return text.replace(/([\w.-]+@[\w.-]+\.\w+)/g, '<a href="mailto:$1">$1</a>')
+               .replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+  }
+})();
+</script>
+</body>
+</html>
